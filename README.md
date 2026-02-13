@@ -1,2 +1,32 @@
-# AI-Healthcare-Prediction-System
-The AI Healthcare Prediction System uses Artificial Intelligence and Machine Learning to analyze patient health data and predict diseases at an early stage. It supports healthcare professionals with data-driven insights, improves diagnostic accuracy, and enhances patient care through data preprocessing, predictive models,and interactive dashboards.
+
+## 📌 Project Overview
+---
+The AI Healthcare Prediction System is a Machine Learning–based application designed to analyze patient medical data and predict potential diseases at an early stage.
+
+The system processes patient information such as age, symptoms, medical history, test results, and lifestyle factors to generate disease risk predictions. It helps healthcare professionals make data-driven decisions, reduce diagnostic errors, and improve patient outcomes.
+
+This project demonstrates the real-world application of AI in the healthcare domain by combining:
+
+Data preprocessing
+
+Feature engineering
+
+Machine learning model training
+
+Model evaluation
+
+Interactive visualization dashboard
+
+## 🎯 Problem Statement
+
+Early detection of diseases can significantly reduce healthcare costs and improve survival rates. However, manual diagnosis may sometimes lead to delays or human errors.
+
+This system aims to:
+
+Assist doctors in early disease detection
+
+Provide risk score predictions
+
+Automate medical data analysis
+
+Improve healthcare efficiency
