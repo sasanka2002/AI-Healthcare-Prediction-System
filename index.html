@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Healthcare AI Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f7fa;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 30px;
+        }
+
+        .dashboard {
+            max-width: 900px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        h3 {
+            color: #1565c0;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .result {
+            background: #e8f5e9;
+            padding: 15px;
+            border-left: 5px solid #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+        }
+
+        canvas {
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Healthcare AI Dashboard</h2>
+
+<div class="dashboard">
+
+    <!-- INPUT -->
+    <div class="card">
+        <h3>Patient Input</h3>
+
+        <textarea id="symptoms" rows="4" placeholder="Enter symptoms (fever, cough, headache)"></textarea>
+        <textarea id="review" rows="4" placeholder="Describe patient condition"></textarea>
+
+        <button onclick="analyze()">Analyze Health</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h3>AI Analysis Result</h3>
+
+        <div id="output">
+            Enter patient details to see result.
+        </div>
+
+        <canvas id="myChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+let chart; // global chart variable
+
+function analyze() {
+    const symptoms = document.getElementById("symptoms").value.toLowerCase();
+    const review = document.getElementById("review").value.toLowerCase();
+    const output = document.getElementById("output");
+
+    if (!symptoms || !review) {
+        output.innerHTML = "<div class='error'>Please enter all fields</div>";
+        return;
+    }
+
+    // ---- SIMPLE AI LOGIC (Mock AI) ----
+    let disease = "Flu";
+    let scores = [20, 70, 10];
+
+    if (symptoms.includes("sugar") || symptoms.includes("urine")) {
+        disease = "Diabetes";
+        scores = [80, 10, 10];
+    } else if (symptoms.includes("chest") || symptoms.includes("heart")) {
+        disease = "Heart Disease";
+        scores = [10, 20, 70];
+    }
+
+    output.innerHTML = `
+        <div class="result">
+            <p><b>Predicted Disease:</b> ${disease}</p>
+            <p><b>AI Confidence:</b> High</p>
+            <p><b>Recommendation:</b> Consult a doctor</p>
+        </div>
+    `;
+
+    drawChart(scores);
+}
+
+function drawChart(dataValues) {
+    const ctx = document.getElementById("myChart");
+
+    if (chart) {
+        chart.destroy(); // remove old chart
+    }
+
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Diabetes', 'Flu', 'Heart Disease'],
+            datasets: [{
+                label: 'Risk Level (%)',
+                data: dataValues
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, max: 100 }
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | AI Healthcare System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(120deg, #d9fdd3, #d0e7ff);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+        background: linear-gradient(135deg, #1b5e20, #2e7d32);
+        color: white;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        animation: slideDown 0.8s ease;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0.5px;
+    }
+
+    nav a {
+        color: white;
+        margin-left: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: opacity 0.3s;
+    }
+
+    nav a:hover {
+        opacity: 0.8;
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(0); }
+    }
+
+    /* ---------- MAIN ---------- */
+    main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        width: 420px;
+        padding: 35px;
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 0.9s ease;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        text-align: center;
+        color: #1b5e20;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+    label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 11px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #2e7d32;
+    }
+
+    .password-box {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #1565c0;
+    }
+
+    .strength {
+        height: 5px;
+        width: 100%;
+        background: #ddd;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .strength-bar {
+        height: 100%;
+        width: 0%;
+        background: red;
+        transition: width 0.3s, background 0.3s;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    }
+
+    .footer-link {
+        text-align: center;
+        margin-top: 18px;
+        font-size: 13px;
+    }
+
+    .footer-link a {
+        color: #1565c0;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+        background: #1b5e20;
+        color: #e0e0e0;
+        text-align: center;
+        padding: 12px;
+        font-size: 13px;
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+        header {
+            flex-direction: column;
+            text-align: center;
+        }
+        nav {
+            margin-top: 8px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+
+<header>
+    <h1>AI Healthcare</h1>
+    <nav>
+        <a href="/home">home</a>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+        <a href="/about">About</a>
+    </nav>
+</header>
+
+<main>
+    <div class="card">
+        <h2>Create Account</h2>
+        <div class="subtitle">AI Healthcare Recommendation System</div>
+
+```
+    <form method="POST">
+        <label>Full Name</label>
+        <input type="text" name="name" required>
+
+        <label>Email Address</label>
+        <input type="email" name="email" required>
+
+        <label>Username</label>
+        <input type="text" name="username" required>
+
+        <label>Password</label>
+        <div class="password-box">
+            <input type="password" name="password" id="password" onkeyup="checkStrength()" required>
+            <span class="toggle-password" onclick="togglePassword()">Show</span>
+        </div>
+
+        <div class="strength">
+            <div class="strength-bar" id="strengthBar"></div>
+        </div>
+
+        <label>Role</label>
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="user">User</option>
+            <option value="analyst">Analyst</option>
+        </select>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="footer-link">
+        Already registered? <a href="/login">Login</a>
+    </div>
+</div>
+```
+
+</main>
+
+<footer>
+    © 2026 AI Healthcare System | Secure • Intelligent • Reliable
+</footer>
+
+<script>
+    function togglePassword() {
+        const pwd = document.getElementById("password");
+        const text = document.querySelector(".toggle-password");
+        if (pwd.type === "password") {
+            pwd.type = "text";
+            text.innerText = "Hide";
+        } else {
+            pwd.type = "password";
+            text.innerText = "Show";
+        }
+    }
+
+    function checkStrength() {
+        const pwd = document.getElementById("password").value;
+        const bar = document.getElementById("strengthBar");
+        let strength = 0;
+        if (pwd.length >= 6) strength++;
+        if (/[A-Z]/.test(pwd)) strength++;
+        if (/[0-9]/.test(pwd)) strength++;
+        if (/[^A-Za-z0-9]/.test(pwd)) strength++;
+        const widths = ["0%", "25%", "50%", "75%", "100%"];
+        const colors = ["red", "orange", "yellow", "dodgerblue", "green"];
+        bar.style.width = widths[strength];
+        bar.style.background = colors[strength];
+    }
+</script>
+
+</body>
+</html>

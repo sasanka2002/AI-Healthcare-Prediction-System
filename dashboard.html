@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Healthcare AI Symptom Analyzer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fa;
+    margin: 0;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(135deg,#1b5e20,#4caf50);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* FOOTER */
+footer {
+    background: #1b5e20;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 40px;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    resize: none;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: linear-gradient(135deg,#2e7d32,#66bb6a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    background: #e8f5e9;
+    border-left: 6px solid #2e7d32;
+    border-radius: 8px;
+}
+
+.ai-text {
+    font-style: italic;
+    color: #555;
+}
+
+.section {
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🩺 Healthcare AI Assistant</h1>
+    <p>Symptom-based Disease Prediction & First Aid Guidance</p>
+</header>
+
+<div class="container">
+    <h2>AI Symptom Analyzer</h2>
+
+    <textarea id="symptoms" rows="5"
+        placeholder="Example: fever, cough, chest pain, fatigue"></textarea>
+
+    <button onclick="analyzeSymptoms()">Analyze with AI</button>
+
+    <div id="output"></div>
+</div>
+
+<footer>
+    <p>
+    The results shown by this symptom analyzer are intended to offer general guidance only.
+    For an accurate diagnosis and proper treatment, please consult a qualified healthcare professional.
+</p>
+
+</footer>
+
+<script>
+const diseases = [
+{
+  name: "Diabetes",
+  symptoms: ["frequent urination","thirst","fatigue","weight loss"],
+  medicines: "Metformin (doctor prescribed), Glucose tablets (low sugar)",
+  firstAid: "Avoid sugar intake, drink water, check blood sugar.",
+  recommendation: "Consult an endocrinologist and monitor blood sugar regularly."
+},
+{
+  name: "Flu",
+  symptoms: ["fever","cough","cold","body pain","headache"],
+  medicines: "Paracetamol, Cough syrup",
+  firstAid: "Take rest, warm fluids, steam inhalation.",
+  recommendation: "Consult physician if fever lasts more than 3 days."
+},
+{
+  name: "Heart Disease",
+  symptoms: ["chest pain","shortness of breath","sweating","fatigue"],
+  medicines: "Aspirin (only if previously advised)",
+  firstAid: "Stop activity, sit down, seek emergency help.",
+  recommendation: "Immediate cardiologist consultation required."
+},
+{
+  name: "COVID-19",
+  symptoms: ["fever","cough","loss of taste","loss of smell","fatigue"],
+  medicines: "Paracetamol, Zinc, Vitamin C",
+  firstAid: "Isolate, drink fluids, monitor oxygen levels.",
+  recommendation: "RT-PCR test and medical consultation advised."
+},
+{
+  name: "Asthma",
+  symptoms: ["wheezing","shortness of breath","chest tightness"],
+  medicines: "Inhaler (Salbutamol – if prescribed)",
+  firstAid: "Sit upright, avoid allergens, use inhaler.",
+  recommendation: "Pulmonologist consultation advised."
+},
+{
+  name: "Hypertension",
+  symptoms: ["headache","dizziness","blurred vision"],
+  medicines: "BP tablets (as prescribed)",
+  firstAid: "Rest, avoid stress, check BP.",
+  recommendation: "Regular BP monitoring required."
+},
+{
+  name: "Pneumonia",
+  symptoms: ["fever","cough","chest pain","breathing difficulty"],
+  medicines: "Paracetamol, Antibiotics (doctor prescribed)",
+  firstAid: "Rest, hydration, seek medical care.",
+  recommendation: "Chest X-ray and hospital care needed."
+},
+{
+  name: "Tuberculosis",
+  symptoms: ["chronic cough","weight loss","night sweats","blood cough"],
+  medicines: "Anti-TB drugs (DOTS)",
+  firstAid: "Wear mask, avoid close contact.",
+  recommendation: "Immediate TB specialist consultation required."
+},
+{
+  name: "Migraine",
+  symptoms: ["severe headache","nausea","light sensitivity"],
+  medicines: "Pain relievers, anti-nausea tablets",
+  firstAid: "Dark room rest, avoid loud noise.",
+  recommendation: "Neurologist consultation advised."
+},
+{
+  name: "Anemia",
+  symptoms: ["fatigue","pale skin","dizziness"],
+  medicines: "Iron supplements",
+  firstAid: "Iron-rich diet (spinach, dates).",
+  recommendation: "CBC test recommended."
+},
+{
+  name: "Arthritis",
+  symptoms: ["joint pain","swelling","stiffness"],
+  medicines: "Pain relievers, anti-inflammatory drugs",
+  firstAid: "Warm compress, light movement.",
+  recommendation: "Rheumatologist consultation advised."
+},
+{
+  name: "Kidney Disease",
+  symptoms: ["swelling","fatigue","urine changes"],
+  medicines: "As prescribed by nephrologist",
+  firstAid: "Reduce salt intake, stay hydrated.",
+  recommendation: "Creatinine test required."
+},
+{
+  name: "Liver Disease",
+  symptoms: ["jaundice","abdominal pain","fatigue"],
+  medicines: "Liver supplements (doctor advised)",
+  firstAid: "Avoid alcohol, eat light food.",
+  recommendation: "Liver function test advised."
+},
+{
+  name: "Stroke",
+  symptoms: ["face droop","speech difficulty","weakness"],
+  medicines: "Emergency treatment only",
+  firstAid: "Call emergency immediately, do not feed.",
+  recommendation: "Immediate hospitalization required."
+},
+{
+  name: "Cancer",
+  symptoms: ["unexplained weight loss","lump","fatigue"],
+  medicines: "Chemotherapy / targeted therapy",
+  firstAid: "Early diagnosis is key.",
+  recommendation: "Oncologist consultation required."
+},
+{
+  name: "Thyroid Disorder",
+  symptoms: ["weight change","hair loss","fatigue"],
+  medicines: "Thyroxine (if prescribed)",
+  firstAid: "Regular medication intake.",
+  recommendation: "TSH test advised."
+},
+{
+  name: "Dengue",
+  symptoms: ["high fever","joint pain","rash"],
+  medicines: "Paracetamol ONLY",
+  firstAid: "Drink fluids, avoid aspirin.",
+  recommendation: "Platelet count monitoring required."
+},
+{
+  name: "Malaria",
+  symptoms: ["fever with chills","sweating","headache"],
+  medicines: "Antimalarial drugs",
+  firstAid: "Rest, fluids.",
+  recommendation: "Blood smear test required."
+},
+{
+  name: "Typhoid",
+  symptoms: ["high fever","weakness","stomach pain"],
+  medicines: "Antibiotics (doctor prescribed)",
+  firstAid: "Soft diet, hydration.",
+  recommendation: "Widal test advised."
+},
+{
+  name: "Cholesterol",
+  symptoms: ["chest discomfort","fatigue"],
+  medicines: "Statins (if prescribed)",
+  firstAid: "Low-fat diet, exercise.",
+  recommendation: "Lipid profile test required."
+},
+{
+  name: "Obesity",
+  symptoms: ["weight gain","breathlessness"],
+  medicines: "Weight-loss supplements (doctor advised)",
+  firstAid: "Diet control, daily walking.",
+  recommendation: "BMI evaluation recommended."
+},
+{
+  name: "Depression",
+  symptoms: ["sadness","sleep issues","loss of interest"],
+  medicines: "Antidepressants (psychiatrist prescribed)",
+  firstAid: "Talk to someone, avoid isolation.",
+  recommendation: "Psychological counseling advised."
+}
+];
+
+function analyzeSymptoms() {
+    const input = document.getElementById("symptoms").value.toLowerCase();
+    const output = document.getElementById("output");
+
+    if (!input.trim()) {
+        output.innerHTML = "<p style='color:red'>Please enter symptoms.</p>";
+        return;
+    }
+
+    let matches = [];
+
+    diseases.forEach(d => {
+        let score = 0;
+        d.symptoms.forEach(s => {
+            if (input.includes(s)) score++;
+        });
+        if (score > 0) {
+            matches.push({...d, confidence: Math.min(95, score * 30)});
+        }
+    });
+
+    if (matches.length === 0) {
+        output.innerHTML = "<p>No confident match found. Please consult a doctor.</p>";
+        return;
+    }
+
+    matches.sort((a,b) => b.confidence - a.confidence);
+
+    let html = `<div class="result">
+        <p class="ai-text">🧠 AI has analyzed your symptoms and found the following:</p>`;
+
+    matches.slice(0,3).forEach((m,i) => {
+        html += `
+        <hr>
+        <h3>${i+1}. ${m.name}</h3>
+        <div class="section"><b>AI Confidence:</b> ${m.confidence}%</div>
+        <div class="section"><b>Recommendation:</b> ${m.recommendation}</div>
+        <div class="section"><b>Suggested Medicines:</b> ${m.medicines}</div>
+        <div class="section"><b>First Aid Steps:</b> ${m.firstAid}</div>`;
+    });
+
+    html += "</div>";
+    output.innerHTML = html;
+}
+</script>
+
+</body>
+</html>
